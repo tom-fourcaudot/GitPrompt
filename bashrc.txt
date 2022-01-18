@@ -1,0 +1,71 @@
+BGP_BRANCH_SAFE=("develop" "dev")
+BGP_BRANCH_UNSAFE=("master")
+BGP_USER_UNSAFE=("root" "prod" "git")
+
+function in_array() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+function bgp_prompt() {
+
+  # Define colors
+  local RED="\[\e[31m\]"
+  local YELLOW="\[\e[33m\]"
+  local GREEN="\[\e[32m\]"
+  local BLUE="\[\e[1;34m\]"
+  local CYAN="\[\e[1;36m\]"
+  local ORANGE="\[\e[33m\]"
+  local RESET="\[$(tput sgr0)\]"
+
+  # Get username and host
+  local USER=$(whoami)
+  local USER_PS="$CYAN\u$RESET@$BLUE\h$RESET"
+  if in_array "${USER}" "${BGP_USER_UNSAFE[@]}"; then
+    USER_PS="$CYAN\u$RESET@$BLUE\h$RESET"
+  fi
+
+  # Get git status
+  local GIT_STATUS=$(git status --porcelain --ignore-submodules 2> /dev/null | wc -l)
+  local GIT_STATUS_PS="$GREEN=$RESET"
+  if [[ "0" != "$GIT_STATUS" ]]; then
+    GIT_STATUS_PS="$RED~$GIT_STATUS$RESET"
+  fi
+
+  # Get git branch
+  local GIT_BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  local GIT_BRANCH_PS=" $ORANGE($GIT_BRANCH)$RESET$GIT_STATUS_PS"
+  if in_array "${GIT_BRANCH}" "${BGP_BRANCH_SAFE[@]}"; then
+    GIT_BRANCH_PS=" $GREEN($GIT_BRANCH)$RESET$GIT_STATUS_PS"
+  elif in_array "${GIT_BRANCH}" "${BGP_BRANCH_UNSAFE[@]}"; then
+    GIT_BRANCH_PS=" $RED($GIT_BRANCH)$RESET$GIT_STATUS_PS"
+  elif [[ "" == "$GIT_BRANCH" ]]; then
+    GIT_BRANCH_PS=""
+  fi
+
+  PS1="${USER_PS} ${ORANGE}\w${RESET}${GIT_BRANCH_PS} \\n ${BLUE}└───► ${RESET}"
+
+}
+# Regular Colors
+Black='\033[1;30m'        # Black
+Red='\033[1;31m'          # Red
+Pink='\033[1;31m'          # Red
+Green='\033[1;32m'        # Green
+Orange='\033[0;33m'       # Orange
+Yellow='\033[1;33m'       # Yellow
+Blue='\033[1;34m'         # Blue
+Purple='\033[1;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+Color_Off='\033[0m'	  #no color
+
+PROMPT_COMMAND=bgp_prompt
+echo -e ${White}'  /\_/\     '"${Red}❤${Color_Off} ${Yellow}Meow!${Color_Off} ${Red}❤${Color_Off}"'
+'"${Orange}"'='"${White}"'( '"${Blue}"'°'"${Color_Off}${Purple}"'ω'"${No_Color}${Blue}"'°'"${White}"' )'"${Orange}"'='"${White}"'      
+  )   (  //	'"${White}"'<'"${Blue}"'Welcome '"${Green}$USER${White}"'>'"${White}"'
+ (__ __)//'"${Color_Off}"'
+'
+echo "Prompt basé sur le code de Samuel Marchal, alias zessx"
+echo -e "${Black} https://gist.github.com/zessx/10777a44ff56304487e7970142ca0b65 ${Color_Off}
+"
