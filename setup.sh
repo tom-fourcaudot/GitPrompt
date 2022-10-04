@@ -17,7 +17,12 @@ function main() {
     if [ -z $bashrc ] 
     then
         echo -e "❌  No such file .bashrc\n" >&2
-        exit 1
+        bashrc=$(find $HOME -maxdepth 3 -name .zshrc)
+        if [ -z $bashrc ]
+        then
+            echo -e "❌  No such file .zshrc\n" >&2
+            exit 1
+        fi
     fi
     #verify you don't have this prompt
     not_here $bashrc
