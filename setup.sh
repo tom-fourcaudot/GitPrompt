@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # test if you already have the prompt
-function not_here() {
+function not_here () {
     b=$(cat $1 | grep https://github.com/Pompom9zZz/GitPrompt)
     if [ -z "$b" ]
     then
@@ -11,7 +11,7 @@ function not_here() {
     fi
 }
 
-function main() {
+function main () {
     # search the .bashrc file
     bashrc=$(find $HOME -maxdepth 3 -name .bashrc)
     if [ -z $bashrc ] 
