@@ -1,3 +1,7 @@
+#Code adding from GitPrompt, by Tom Fourcaudot
+#link: https://github.com/Pompom9zZz/GitPrompt
+#begin
+
 BGP_BRANCH_SAFE=("develop" "dev")
 BGP_BRANCH_UNSAFE=("master")
 BGP_USER_UNSAFE=("root" "prod" "git")
@@ -69,3 +73,4 @@ echo -e ${White}'  /\_/\     '"${Red}❤${Color_Off} ${Yellow}Meow!${Color_Off} 
 echo "Prompt basé sur le code de Samuel Marchal, alias zessx"
 echo -e "${Black} https://gist.github.com/zessx/10777a44ff56304487e7970142ca0b65 ${Color_Off}
 "
+#end of code from GitPrompt
